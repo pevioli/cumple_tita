@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subí tus fotos para Tita 🎂</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    input, button { margin: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>🎉 Subí tus fotos del cumple de Tita</h2>
+  <form id="uploadForm">
+    <input type="file" id="photos" name="photos" accept="image/*" multiple required />
+    <br>
+    <button type="submit">Subir fotos</button>
+  </form>
+  <p id="status"></p>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const files = document.getElementById("photos").files;
+      const formData = new FormData();
+      for (let file of files) formData.append("photos", file);
+
+      const status = document.getElementById("status");
+      status.textContent = "Subiendo...";
+
+      const res = await fetch("https://TU-BACKEND.onrender.com/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        status.textContent = "¡Gracias por subir tus fotos! 📸";
+        form.reset();
+      } else {
+        status.textContent = "Hubo un error 😓";
+      }
+    });
+  </script>
+</body>
+</html>
